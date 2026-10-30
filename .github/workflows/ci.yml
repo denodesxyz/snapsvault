@@ -85,3 +85,6 @@ jobs:
 
       - name: Build
         run: npm run docs:build
+
+      - name: LLM files
+        run: test -s .vitepress/dist/llms.txt && test -s .vitepress/dist/llms-full.txt

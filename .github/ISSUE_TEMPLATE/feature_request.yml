@@ -1,0 +1,46 @@
+name: Feature request
+description: Propose a new feature or a change to the Marketplace, the SnapsOS CLI, the REST API or the docs
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Contributors add their snapshots through the registry, not through an issue. See https://docs.snapsvault.xyz/contributing/list-your-snapshots
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Marketplace
+        - SnapsOS CLI
+        - REST API
+        - Website
+        - Docs
+        - Registry or feed format
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is hard or impossible today, and for whom (node operator, contributor, developer).
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should change. Mock-ups, example API responses or CLI output help.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I can open a pull request for this

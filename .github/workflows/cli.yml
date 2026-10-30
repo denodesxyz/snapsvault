@@ -1,0 +1,43 @@
+name: CLI
+
+on:
+  pull_request:
+    paths:
+      - 'cli/**'
+      - '.github/workflows/cli.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Install shellcheck and jq
+        run: |
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            command -v shellcheck >/dev/null || brew install shellcheck
+            command -v jq >/dev/null || brew install jq
+          else
+            command -v shellcheck >/dev/null || sudo apt-get install -y shellcheck
+            command -v jq >/dev/null || sudo apt-get install -y jq
+          fi
+
+      - name: Shellcheck
+        run: shellcheck cli/snapsos.sh cli/tests/run.sh
+
+      - name: Tests
+        run: bash cli/tests/run.sh

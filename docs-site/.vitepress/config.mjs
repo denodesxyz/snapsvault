@@ -1,7 +1,43 @@
 import { defineConfig } from 'vitepress';
+import { writeLlmsFiles } from './llms.mjs';
 
 const SITE = 'https://docs.snapsvault.xyz';
 const OG_IMAGE = `${SITE}/og-image.jpg`;
+
+const SIDEBAR = [
+  {
+    text: 'Learn',
+    items: [
+      { text: 'Introduction', link: '/overview/what-is-snapsvault' },
+      { text: 'How it works', link: '/overview/how-it-works' },
+      { text: 'Quickstart', link: '/overview/quickstart' },
+      { text: 'Glossary', link: '/overview/glossary' },
+    ],
+  },
+  {
+    text: 'Use',
+    items: [
+      { text: 'Marketplace', link: '/core-components/marketplace' },
+      { text: 'SnapsOS CLI', link: '/core-components/snapsos-cli' },
+      { text: 'REST API', link: '/core-components/rest-api' },
+    ],
+  },
+  {
+    text: 'Contribute',
+    items: [
+      {
+        text: 'Snapshots',
+        link: '/contributing/list-your-snapshots',
+        items: [
+          { text: 'Feed format', link: '/contributing/feed-format' },
+          { text: 'Registry file', link: '/contributing/registry-file' },
+        ],
+      },
+      { text: 'Improvements', link: '/contributing/contribute' },
+      { text: 'Feedback', link: '/contributing/feedback' },
+    ],
+  },
+];
 
 export default defineConfig({
   lang: 'en-US',
@@ -27,6 +63,17 @@ export default defineConfig({
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:image', content: OG_IMAGE }],
   ],
+
+  async buildEnd(siteConfig) {
+    await writeLlmsFiles({
+      srcDir: siteConfig.srcDir,
+      outDir: siteConfig.outDir,
+      site: SITE,
+      title: 'SnapsVault Docs',
+      description: 'SnapsVault is an open snapshot marketplace for node snapshots. Contributors publish their snapshots in one format, and node operators find, verify and download them in one place, through a web Marketplace, the SnapsOS CLI or a REST API.',
+      sidebar: SIDEBAR,
+    });
+  },
 
   transformPageData(pageData, { siteConfig }) {
     if (pageData.isNotFound) return;
@@ -60,40 +107,7 @@ export default defineConfig({
       { text: 'Website', link: 'https://snapsvault.xyz' },
     ],
 
-    sidebar: [
-      {
-        text: 'Learn',
-        items: [
-          { text: 'Introduction', link: '/overview/what-is-snapsvault' },
-          { text: 'How it works', link: '/overview/how-it-works' },
-          { text: 'Quickstart', link: '/overview/quickstart' },
-          { text: 'Glossary', link: '/overview/glossary' },
-        ],
-      },
-      {
-        text: 'Use',
-        items: [
-          { text: 'Marketplace', link: '/core-components/marketplace' },
-          { text: 'SnapsOS CLI', link: '/core-components/snapsos-cli' },
-          { text: 'REST API', link: '/core-components/rest-api' },
-        ],
-      },
-      {
-        text: 'Contribute',
-        items: [
-          {
-            text: 'Snapshots',
-            link: '/contributing/list-your-snapshots',
-            items: [
-              { text: 'Feed format', link: '/contributing/feed-format' },
-              { text: 'Registry file', link: '/contributing/registry-file' },
-            ],
-          },
-          { text: 'Improvements', link: '/contributing/contribute' },
-          { text: 'Feedback', link: '/contributing/feedback' },
-        ],
-      },
-    ],
+    sidebar: SIDEBAR,
 
     search: { provider: 'local' },
 

@@ -23,6 +23,10 @@ Some contributors are already listed. They edit their existing file in `chains/c
 Ask in your pull request, or on [Telegram](https://t.me/goldzn). More options are on the [Feedback](/contributing/feedback) page.
 :::
 
+::: tip Using an AI agent?
+A ready prompt in [Set it up with an AI agent](#set-it-up-with-an-ai-agent) lets a coding agent create the feed on the snapshot server.
+:::
+
 ## Feed example
 
 A feed is a JSON array served over HTTPS, one entry per current snapshot, one feed per chain ID and snapshot type. The file can have any name, for example `index.json`. Fill all six fields: `url`, `filename`, `size`, `creation_date`, `latest_block_height` and `sha256sum`. A missing field is shown as "N/A" on SnapsVault (see [Feed format](/contributing/feed-format#feed-fields) for the few that get a fallback), and the check fails when `url` is missing, or `latest_block_height` is missing (except for an archive). A snapshot of type `archive` that starts at genesis may use height `0`. This example is based on the deNodes mainnet feed:
@@ -217,3 +221,36 @@ The script works as follows:
 To check the file without Node.js, run `python3 -m json.tool index.json`.
 :::
 ::::
+
+## Set it up with an AI agent
+
+An AI coding agent can set up the feed on the snapshot server. Fill in the four values at the top and paste the prompt into the agent, running on that server. The agent shows its plan before it changes anything.
+
+<div class="sv-prompt">
+
+```text
+Set up a SnapsVault snapshot feed on this server.
+
+Snapshot folder: <folder where the snapshot files are written>
+Public base URL: <https:// URL that serves that folder>
+Chain ID: <celestia, mocha-4 or mocha-5>
+Snapshot type: <pruned or archive>
+
+Rules: follow these pages exactly and treat them as the source of truth:
+- https://docs.snapsvault.xyz/contributing/feed-format
+- https://docs.snapsvault.xyz/contributing/list-your-snapshots
+
+Steps:
+1. Inspect the snapshot folder and the job that creates the snapshots (cron, systemd timer or script). Do not move, rename or delete any snapshot file.
+2. Find the block height of each snapshot from the snapshot job: its file name, its log or the node state at the time the snapshot was taken. Never use the current height of a running node for an older file. If the height cannot be found, stop and ask me.
+3. Write the feed: a JSON array with one entry per current snapshot and the six fields url, filename, size, creation_date, latest_block_height and sha256sum. Compute sha256sum from the file, or take the 64-character hash from an existing .sha256 file. Write it under a new name and move it into place, so a reader never sees a half-written feed.
+4. Run the feed update at the end of the snapshot job, once the snapshot file is complete, so the feed changes with every new snapshot.
+5. Check the result: the JSON parses, every entry has the six fields in the documented formats, and the feed URL and every snapshot url answer over HTTPS.
+6. Print the feed URL and a draft registry file for chains/celestia/<chain ID>/<contributor>.json in the format of the registry file example, with the period that matches the snapshot job.
+
+Before step 3, show me the plan: the files you will create or change and the exact feed you will write for the newest snapshot. Wait for my approval.
+```
+
+</div>
+
+The agent ends with the feed URL and a draft registry file. Review the draft, then [open a pull request](#open-a-pull-request) or ask the SnapsVault team to update an existing listing.

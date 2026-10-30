@@ -159,3 +159,14 @@ html:not(.dark) .dark-only {
 .vp-doc [class*='language-'] > button.copy:hover.copied::before {
   display: none;
 }
+
+/* The agent prompt wraps instead of scrolling sideways. */
+.vp-doc .sv-prompt pre {
+  overflow-x: hidden;
+}
+
+.vp-doc .sv-prompt pre code {
+  width: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react'
 import ExternalLink from '@/components/ui/external-link'
 import { Icon } from '@/components/ui/icons'
-import { DOCS_URL } from '@/lib/links'
 
-const POST_URL = `${DOCS_URL}/overview/what-is-snapsvault`
+const POST_URL = 'https://paragraph.com/@denodes/introducing-snapsvault'
 const STORAGE_KEY = 'snapsvault-announce-dismissed'
 const HIDDEN_CLASS = 'sv-announce-hidden'
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-const POST_URL = 'https://docs.snapsvault.xyz'
+const POST_URL = 'https://paragraph.com/@denodes/introducing-snapsvault'
 const STORAGE_KEY = 'snapsvault-announce-dismissed'
 const COOKIE = 'sv-announce-dismissed'
 const HIDDEN_CLASS = 'sv-announce-hidden'
@@ -35,7 +35,7 @@ const AnnouncementBar = () => {
   return (
     <div className='sv-announce group fixed top-0 left-0 z-50 w-full h-9 flex items-center bg-celestia text-primary-foreground text-sm font-medium'>
       <div className='w-full max-w-[1376px] mx-auto px-14 flex items-center justify-center min-w-0'>
-      <Link href={POST_URL} target='_blank' className='group/link flex items-center gap-2 min-w-0'>
+      <Link href={POST_URL} target='_blank' rel='noopener noreferrer' className='group/link flex items-center gap-2 min-w-0'>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src='/celestia-logo.svg' alt='' aria-hidden='true' className='w-5 h-5 shrink-0' style={{ filter: 'brightness(0) invert(1)' }} />
         <span className='truncate'><span className='hidden xs:inline'>Introducing </span><span className='font-semibold'>Celestia Snapshot Marketplace</span></span>
